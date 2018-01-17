@@ -50,7 +50,7 @@ app.post("/user/post", (req, res) => {
     // });
 });
 
-// edit data barang
+// edit data
 app.put("/user/put/:id", (req, res) => {
     let input = JSON.parse(JSON.stringify(req.body));
     let id = req.params.id;
@@ -67,5 +67,18 @@ app.put("/user/put/:id", (req, res) => {
     );
 });
 
+// hapus data
+app.delete('/user/delete/:id', (req, res) => {
+    let id = req.params.id;
+
+    connection.query("DELETE FROM users  WHERE userId = ? ", [id], function(err, rows) {
+
+        if (err)
+            console.log("Error deleting : %s ", err);
+
+        res.redirect('/user/get');
+
+    });
+});
 
 app.listen(1777);
