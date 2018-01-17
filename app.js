@@ -27,33 +27,28 @@ app.get("/user/get", (req, res) => {
 });
 
 // input data 
-// app.post("/item", (req, res) => {
-//     let { kode, nama, qtyIn } = req.body;
-//     let barang = new Barang({
-//         nama: nama,
-//         kode: kode
-//     });
+app.post("/user/post", (req, res) => {
+    let input = JSON.parse(JSON.stringify(req.body));
 
-//     barang.save((error, valueReturn) => {
-//         let d = new Date();
-//         let tgl = d.getTime() / 1000;
-//         req.body.tgl;
-//         let transaksi = new Transaksi({
-//             id_item: valueReturn._id,
-//             qtyIn: qtyIn,
-//             tglTransaksi: tgl
-//         });
+    // req.getConnection((err, connection) => {
+    let data = {
+        name: input.name,
+        address: input.address,
+        email: input.email,
+        phone: input.phone
+    };
 
-//         transaksi.save(error => {
-//             console.log(valueReturn._id);
-//             if (error) return res.status(400).send(error.errors);
-//             res.status(201).send("Success!");
-//         });
-//         if (error) return res.status(400).send(error.errors);
-//     });
-// });
+    let query = connection.query("INSERT INTO users set ? ", data, function(
+        err,
+        rows
+    ) {
+        if (err) console.log("Error inserting : %s ", err);
 
-// tampil data barang
+        res.redirect("/user/get");
+    });
+
+    // });
+});
 
 // edit data barang
 // app.put("/item/:id", (req, res) => {
