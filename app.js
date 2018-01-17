@@ -51,26 +51,21 @@ app.post("/user/post", (req, res) => {
 });
 
 // edit data barang
-// app.put("/item/:id", (req, res) => {
-//     let id = req.params.id;
-//     /*
-//     req.checkBody('nama', 'Tidak Boleh dikosongkan').notEmpty();
-//     check for errors!
-//     var errors = req.validationErrors();
-//     if (errors) {
-//       res.send('Terjadi kesalahan: ' + util.inspect(errors), 400);
-//       return;
-//      }
-//      */
-//     const { nama } = req.body;
-//     if (req.body.nama) {
-//         Barang.findOneAndUpdate({ kode: id }, { $set: { nama } }, (error, data) => {
-//             if (error) return res.status(500).send(error.errors);
-//             if (!data) return res.status(304).send("Update Failed!");
-//             res.status(201).send("Updated!");
-//         });
-//     } else res.status(500).send("Terjadi Kesalahan.");
-// });
+app.put("/user/put/:id", (req, res) => {
+    let input = JSON.parse(JSON.stringify(req.body));
+    let id = req.params.id;
+
+    let data = { name: input.name, address: input.address, email: input.email, phone: input.phone };
+
+    connection.query(
+        "UPDATE users set ? WHERE userId = ? ", [data, id],
+        function(err, rows) {
+            if (err) console.log("Error Updating : %s ", err);
+
+            res.send(data);
+        }
+    );
+});
 
 
 app.listen(1777);
